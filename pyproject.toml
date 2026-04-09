@@ -1,5 +1,5 @@
 [project]
-name = "example-project"
+name = "data_sources"
 version = "0.1.0"
 description = "An automated pipeline for periodic retrieval, aggregation, and analysis of gold price and currency exchange rate data."
 readme = "README.md"

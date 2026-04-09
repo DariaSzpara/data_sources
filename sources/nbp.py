@@ -10,7 +10,6 @@ Supported data sources:
 - exchange rates (tables A, B, C).
 """
 from enum import Enum
-from http import HTTPStatus
 from typing import Literal
 
 import pandas as pd
@@ -73,11 +72,9 @@ class NBPSource:
             "Accept": "application/json"
             }
         response = requests.get(self.url,headers=headers)
-        if response.status_code == HTTPStatus.OK:
-            return response.json()
-        print(f"Error: {response.status_code}")
-        return None
-    def transform_data_to_df(self,data: list[dict] | None) -> pd.DataFrame | None:
+        response.raise_for_status()
+        return response.json()
+    def transform_data_to_df(self,data: list[dict]) -> pd.DataFrame:
         """Transform raw API data into a pandas DataFrame.
 
         The transformation depends on the selected source type:
@@ -91,11 +88,10 @@ class NBPSource:
             pandas DataFrame with transformed data, or None if input is None.
         """
         if data is None:
-            return None
-
-        if self.source_type is SourceType.GOLD:
+            raise ValueError("transform_data_to_df() requires non-None data")
+        if self.source_type == "GOLD":
             return pd.DataFrame(data)
-        if self.source_type is SourceType.EXCHANGE_RATES:
+        if self.source_type == "EXCHANGE_RATES":
             rates = data[0]["rates"]
             return pd.DataFrame(rates)
         raise ValueError(f"Unsupported source type: {self.source_type}")
@@ -126,7 +122,3 @@ class NBPSource:
         full_table_name = f"{catalog}.{schema}.{table_name}"
 
         df.write.format("delta").mode(mode).saveAsTable(full_table_name)
-
-source = NBPSource(table="A", source_type="EXCHANGE_RATES")
-
-source.get_data()
