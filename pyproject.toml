@@ -1,0 +1,93 @@
+[project]
+name = "data_sources"
+version = "0.1.0"
+description = "An automated pipeline for periodic retrieval, aggregation, and analysis of gold price and currency exchange rate data."
+readme = "README.md"
+authors = [
+  { name = "Daria Szpara", email = "dariaszpara2@gmal.com" }
+]
+requires-python = ">=3.10"
+
+dependencies = [
+  "requests>=2.31.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.15.8"
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+# Włączamy szeroki zestaw reguł
+lint.select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "B",   # flake8-bugbear
+    "C",   # complexity (mccabe)
+    "I",   # import sorting
+    "N",   # naming
+    "UP",  # pyupgrade
+    "ANN", # type annotations
+    "D",   # docstrings (pydocstyle)
+    "PL",  # pylint-like
+    "RUF", # ruff-specific
+    "SIM", # simplifications
+    "RET", # return rules
+    "ARG", # unused arguments
+    "PTH", # pathlib usage
+]
+
+# Ignoruj tylko rzeczy, które są realnie upierdliwe
+lint.ignore = [
+    "D203", # konflikt z D211
+    "D213", # konflikt z D212
+]
+
+# Maksymalna złożoność funkcji
+lint.mccabe.max-complexity = 10
+
+# Docstring style (Google lub NumPy — wybierz jeden)
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# Wymuszanie type hints
+[tool.ruff.lint.flake8-annotations]
+# wymagaj typów dla wszystkiego
+mypy-init-return = true
+suppress-dummy-args = false
+allow-star-arg-any = false
+ignore-fully-untyped = false
+
+# Import sorting (jak isort)
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-single-line = false
+
+# Naming conventions
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = ["classmethod"]
+staticmethod-decorators = ["staticmethod"]
+
+# Formatowanie (opcjonalnie, jeśli używasz Ruff zamiast Black)
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+# Exclude
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
