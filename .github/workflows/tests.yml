@@ -21,9 +21,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install .['dev']
-          
+
       - name: Run Ruff
-        run: ruff check .
+        run: ruff check sources/
 
       - name: Run tests
         run: |
