@@ -1,7 +1,9 @@
-from sources.nbp import NBPCurrent, NBPHistorySource
-from tests.constances import TEST_DATA, NBP_HISTORY_DATA
 import pandas as pd
 import pytest
+
+from sources.nbp import NBPCurrent, NBPHistorySource
+from tests.constances import NBP_HISTORY_DATA, TEST_DATA
+
 
 @pytest.fixture
 def nbp_current():
@@ -27,4 +29,4 @@ def test_transform_data_to_df_ValueError(nbp_current):
     with pytest.raises(ValueError):
         nbp_current.transform_data_to_df(data=None)
 
-    
+

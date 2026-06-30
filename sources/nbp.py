@@ -113,17 +113,7 @@ class NBPHistorySource(NBPSource):
         rows = []
 
         for table in data:
-            date = table["effectiveDate"]
-
-            for rate in table["rates"]:
-                rows.append(
-                    {
-                        "date": date,
-                        "currency": rate["currency"],
-                        "code": rate["code"],
-                        "mid": rate["mid"],
-                    }
-                )
+            rows.append(table)
 
         return pd.DataFrame(rows)
 
@@ -216,6 +206,6 @@ class NBPCurrent(NBPSource):
                 "transform_data_to_df() requires non-None data"
             )
 
-        rates = data[0]["rates"]
+        rates = data[0]
 
         return pd.DataFrame(rates)
